@@ -1,27 +1,16 @@
 #!/bin/bash
 
-#
-# Author: Vincenzo D'Amore v.damore@gmail.com
-# 20/11/2014
-#
+function shutdown() {
 
-function shutdown()
-{
-  echo `date` " " `whoami` " Received a signal to shutdown"
-
-  # INSERT HERE THE COMMAND YOU WANT EXECUTE AT SHUTDOWN
-
-  exit 0
+    networksetup -setairportpower Wi-Fi off
+    exit 0
 }
 
-function startup()
-{
-  echo `date` " " `whoami` " Starting..."
+function startup() {
 
-  # INSERT HERE THE COMMAND YOU WANT EXECUTE AT STARTUP
-
-  tail -f /dev/null &
-  wait $!
+    networksetup -setairportpower Wi-Fi on
+    tail -f /dev/null &
+    wait $!
 }
 
 trap shutdown SIGTERM

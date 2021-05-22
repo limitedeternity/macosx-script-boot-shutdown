@@ -1,39 +1,40 @@
-macosx-script-boot-shutdown
-===========================
+# macosx-script-boot-shutdown
 
 This configuration is useful when you need to execute a shell script at Mac OS X boot or shutdown.
 
 There are two files:
 
-- boot-shutdown-script.plist
-- boot-shutdown.sh: bash shell script
+- boot-shutdown.plist
+- boot-shutdown.sh
 
-# Install
+## Install
 
-You should customize the following placeholders inside the file boot-shutdown-script.plist:
+1. Copy the file `boot-shutdown.sh` into `/Library/Scripts/`
 
-- `BOOT.SHUTDOWN.SERVICE` : If you don't know, leave it as is
-- `SCRIPT_PATH` : the path where the boot-shutdown.sh script is stored.
-- `LOG_PATH` : the path where the logs are stored. If you don't care about logs, use: /tmp
+2. Copy the file `boot-shutdown.plist` into `/Library/LaunchDaemons/`
 
-Then copy the file `boot-shutdown-script.plist` into `/Library/LaunchDaemons/`
+3. Load the service:
 
-    sudo cp boot-shutdown-script.plist  /Library/LaunchDaemons/
+    sudo launchctl load -w /Library/LaunchDaemons/boot-shutdown.plist
 
-When you want start the virtual machine type the following command:
-
-    sudo launchctl load -w /Library/LaunchDaemons/boot-shutdown-script.plist
-
-If you want stop the script (and the  you should type the following command:
-
-    sudo launchctl unload -w /Library/LaunchDaemons/boot-shutdown-script.plist
-
-The script will be started machine at every host boot.
-Set into `boot-shutdown-script.plist` the field `RunAtLoad` to `false` if you don't want that the script starts automatically every time your mac os x boots.
-When RunAtLoad is set to false, after the load you must start and stop the script using the following command:
+4. Start the service:
 
     sudo launchctl start BOOT.SHUTDOWN.SERVICE
+
+## Uninstall
+
+1. Stop the service:
+
     sudo launchctl stop BOOT.SHUTDOWN.SERVICE
+
+2. Unload the service:
+
+    sudo launchctl unload -w /Library/LaunchDaemons/boot-shutdown.plist
+
+3. Remove `/Library/LaunchDaemons/boot-shutdown.plist`
+
+4. Remove `/Library/Scripts/boot-shutdown.sh`
+
 
 ## Useful links
 
@@ -44,4 +45,3 @@ When RunAtLoad is set to false, after the load you must start and stop the scrip
   [1]: https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html
   [2]: http://www.launchd.info/ 
 
-    
